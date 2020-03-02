@@ -22,6 +22,8 @@ const {
 const authentication = require("./controller/authcontroller")
 const load = require("./controller/insultContoller")
 const store= require('./controller/addController')
+const remove = require('./controller/deleteController')
+const fave=require('./controller/getController')
 
  //TWILIO AUTHKEY       
     const sid=ACCOUNT_SID
@@ -64,11 +66,15 @@ app.get('/auth/checkuser',authentication.checkSession)
 
 //get insults cause cors issue
 app.get('/load/insult', load.insult)
-
 //store insults and compliment
 app.post('/api/insult', store.addinsult)
 app.post('/api/compliment', store.addcompliment)
-
+//delete insults and compliment
+app.delete('/api/insult', remove.deleteinsult)
+app.delete('/api/compliment', remove.deletecompliment)
+//get stored insults and compliment
+app.get('/api/insult', fave.getinsult)
+app.get('/api/compliment', fave.getcompliment)
 
 
 // twillio

@@ -11,11 +11,11 @@ WHERE user_id = $1
 
 CREATE TABLE insult (
     insult_id SERIAL PRIMARY KEY,
-    username VARCHAR(100) UNIQUE REFERENCES users(username),
-    insult TEXT
+    username VARCHAR(100) REFERENCES users(username),
+    insult VARCHAR(100)
 )
 CREATE TABLE compliment (
     compliment_id SERIAL PRIMARY KEY,
-    username VARCHAR(100) UNIQUE REFERENCES users(username),
-    compliment TEXT
+    username VARCHAR(100) REFERENCES users(username),
+    compliment VARCHAR(100)
 )

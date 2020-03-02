@@ -7,22 +7,22 @@ import axios from "axios";
   constructor(props) {
     super(props);
     this.state = { 
-      insults: "default",
-      username:""
+      insult: "default",
    };
   }
 
   componentDidMount() {
     const that = this;
     axios("/load/insult").then(data => {
-      that.setState({ insults: data.data });
+      that.setState({ insult: data.data });
     });
   }
 
   insultClick=()=>{
+    console.log(this.state)
     axios.post('/api/insult', {
       username: this.props.username,
-      insults: this.state.insults
+      insult: this.state.insult
     })
     .then(function (response) {
       console.log(response);
@@ -43,7 +43,7 @@ import axios from "axios";
         fontfamily: "Open Sans",
       };
   return( <div>
-    <h2 style={divStyle}>{this.state.insults}</h2>
+    <h2 style={divStyle}>{this.state.insult}</h2>
     <button onClick={this.insultClick}>ADD Insults</button>
   </div>
   )
