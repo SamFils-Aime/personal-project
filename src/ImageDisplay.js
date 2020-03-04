@@ -6,7 +6,6 @@ require("dotenv").config();
 
  class ImageDisplay extends Component {
   render() {
-    console.log(CloudinaryContext);
     const { REACT_APP_CLOUD_NAME } = process.env;
     return (
       <CloudinaryContext cloudName={REACT_APP_CLOUD_NAME}>

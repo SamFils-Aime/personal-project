@@ -1,2 +1,2 @@
 DELETE FROM compliment
-WHERE compliment = $1
+WHERE compliment_id = $1

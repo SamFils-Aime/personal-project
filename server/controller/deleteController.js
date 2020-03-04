@@ -1,8 +1,9 @@
 const deleteinsult = (req, res) => {
     const db = req.app.get('db')
-    const insult = req.params.id;
-    db.reviews.deleteinsult(insult)
-        .then(deleted => {
+    const {insult_id} = req.params;
+    console.log(req.params)
+    db.deleteinsult(insult_id)
+        .then(() => {
             res.sendStatus(200)
         })
         .catch(error => {
@@ -12,9 +13,10 @@ const deleteinsult = (req, res) => {
     }
 const deletecompliment = (req, res) => {
     const db = req.app.get('db')
-    const compliment = req.params.id;
-    db.reviews.deletecompliment(compliment)
-        .then(deleted => {
+    const {compliment_id} = req.params;
+    console.log(compliment_id)
+    db.deletecompliment(compliment_id)
+        .then(()=> {
             res.sendStatus(200)
         })
         .catch(error => {

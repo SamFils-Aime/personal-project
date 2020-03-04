@@ -16,15 +16,16 @@ function PaperDropzone(props) {
   const user = useSelector(state => state.authReducer.user)
 
 
+
   const UploadImage = async e => {
+    console.log(props)
     const files = e.target.files;
     const data = new FormData();
     data.append("file", files[0]);
     data.append("upload_preset", REACT_APP_UPLOAD_PRESET);
     setLoading(true);
-    console.log(user)
     const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${REACT_APP_CLOUD_NAME}/image/upload?public_id=${user.username}`,
+      `https://api.cloudinary.com/v1_1/${REACT_APP_CLOUD_NAME}/image/upload?public_id=${props.username1}`,
       {
         method: "POST",
         body: data

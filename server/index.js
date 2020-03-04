@@ -70,11 +70,11 @@ app.get('/load/insult', load.insult)
 app.post('/api/insult', store.addinsult)
 app.post('/api/compliment', store.addcompliment)
 //delete insults and compliment
-app.delete('/api/insult', remove.deleteinsult)
-app.delete('/api/compliment', remove.deletecompliment)
+app.delete('/api/deleteinsult/:insult_id', remove.deleteinsult)
+app.delete('/api/deletecompliment/:compliment_id', remove.deletecompliment)
 //get stored insults and compliment
-app.get('/api/insult', fave.getinsult)
-app.get('/api/compliment', fave.getcompliment)
+app.get('/api/faveinsult', fave.getinsult)
+app.get('/api/favecompliment', fave.getcompliment)
 
 
 // twillio

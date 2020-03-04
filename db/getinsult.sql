@@ -1,1 +1,1 @@
-SELECT * FROM insult
+SELECT * FROM insult where username = $1

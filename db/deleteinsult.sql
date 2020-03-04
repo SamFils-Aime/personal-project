@@ -1,2 +1,2 @@
 DELETE FROM insult
-WHERE insult = $1
+WHERE insult_id = $1

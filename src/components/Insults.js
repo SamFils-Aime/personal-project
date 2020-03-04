@@ -3,59 +3,79 @@ import { getSession } from "../redux/reducer/authReducer";
 import { connect } from "react-redux";
 import axios from "axios";
 
- class Insults extends Component {
+class Insults extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      insult: "default",
-   };
+    this.state = {
+      insult: "Try our insults",
+      newinsult: []
+    };
   }
 
-  componentDidMount() {
+  // componentDidMount() {
+  //   const that = this;
+  //   axios("/load/insult").then(data => {
+  //     that.setState({ insult: data.data });
+  //   });
+  // }
+
+  insultClick = (e) => {
+    axios
+      .post("/api/insult", {
+        username: this.props.username,
+        insult: e
+      })
+      .then(()=> {
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  };
+
+  newinsultClick = () => {
     const that = this;
-    axios("/load/insult").then(data => {
-      that.setState({ insult: data.data });
+    axios.get("/load/insult").then(response => {
+      that.setState({
+        newinsult: [...this.state.newinsult, response.data]
+      });
     });
-  }
+  };
 
-  insultClick=()=>{
-    console.log(this.state)
-    axios.post('/api/insult', {
-      username: this.props.username,
-      insult: this.state.insult
-    })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
-  
   render() {
-    console.log(this.state)
-      var divStyle = {
-        color: "white", 
-        fontSize: "16px",
-        width:"20vw",
-        backgroundColor:"blue",
-        margin: "3",
-        fontfamily: "Open Sans",
-      };
-  return( <div>
-    <h2 style={divStyle}>{this.state.insult}</h2>
-    <button onClick={this.insultClick}>ADD Insults</button>
-  </div>
-  )
-  }
+    var divStyle = {
+      color: "white",
+      fontSize: "16px",
+      width: "20vw",
+      backgroundColor: "blue",
+      margin: "3",
+      fontfamily: "Open Sans"
+    };
 
+    var mapthis = this.state.newinsult.map(elements => {
+      return (
+        <h1 style={divStyle}>
+          {elements}
+          <button onClick={()=>{this.insultClick(elements)}}>favourite</button>
+        </h1>
+      );
+    });
+
+    return (
+      <div>
+        <h2 style={divStyle}>{this.state.insult}
+        {/* <button onClick={this.insultClick}>favourite</button> */}
+        </h2>
+        {mapthis}
+        <button onClick={this.newinsultClick}>more insult</button>
+      </div>
+    );
+  }
 }
-const mapStateToProp= state=> {
-  return{
-    username: state.authReducer.username,
-       
-}
-}
-export default connect(mapStateToProp,{
+const mapStateToProp = state => {
+  return {
+    username: state.authReducer.username
+  };
+};
+export default connect(mapStateToProp, {
   getSession
-})(Insults)
+})(Insults);

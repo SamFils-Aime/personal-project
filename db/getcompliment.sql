@@ -1,1 +1,1 @@
-SELECT * FROM compliment
+SELECT * FROM compliment where username = $1

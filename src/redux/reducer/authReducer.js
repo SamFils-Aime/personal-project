@@ -31,24 +31,21 @@ export const resetFields = () => {
 };
 
 export const getSession=()=>{
-  console.log(initialState)
   return{
     type: GETSESSION,
     payload: axios.get('/auth/user')
 
   }
 }
-export const checkSession=()=>{
-  console.log(initialState)
-  return{
-    type: CHECKSESSION,
-    payload: axios.get('/auth/checkuser')
+// export const checkSession=()=>{
+//   return{
+//     type: CHECKSESSION,
+//     payload: axios.get('/auth/checkuser')
 
-  }
-}
+//   }
+// }
 
 export const registerUser = (username, password,firstname,lastname) => {
-  console.log(initialState)
   return {
     type: REGISTER_USER,
     payload: axios.post("/auth/register", {
@@ -87,25 +84,30 @@ export default function authReducer(state = initialState, action) {
         ...state,
         ...payload
       };
-    case `${REGISTER_USER}_PENDING`:
+    // case `${REGISTER_USER}_PENDING`:
+    //   return {
+    //     ...state,
+    //     loading: true
+    //   };
+    case `${REGISTER_USER}_FULFILLED`:
+      console.log(payload, "hit")
       return {
         ...state,
-        loading: true
+        loading: false,
+        username: payload.data.username,
+        user: payload.data
       };
-    case `${REGISTER_USER}_FUFILLED`:
-      return {
-        ...state
-      };
-      case `${LOGIN_USER}_PENDING`:
-        return {
-            ...state,
-            loading: true
-        }
+      // case `${LOGIN_USER}_PENDING`:
+      //   return {
+      //       ...state,
+      //       loading: true
+      //   }
     case `${LOGIN_USER}_FULFILLED`:
         return {
             ...state,
             loading: false,
-            user: payload.data
+            user: payload.data,
+            username: payload.data.username
         }
     case `${LOGOUT_USER}_PENDING`:
       return {
@@ -125,12 +127,12 @@ export default function authReducer(state = initialState, action) {
           loading:false,
           user: payload.data
         }
-      case `${CHECKSESSION}_FUFILLED`:
-        return{
-          ...state,
-          loading:false,
-          user: payload.data
-        }
+      // case `${CHECKSESSION}_FUFILLED`:
+      //   return{
+      //     ...state,
+      //     loading:false,
+      //     user: payload.data
+      //   }
 
     default:
       return state;

@@ -3,60 +3,83 @@ import { getSession } from "../redux/reducer/authReducer";
 import { connect } from "react-redux";
 import axios from "axios";
 
- class Compliment extends Component {
+class Compliment extends Component {
   constructor(props) {
     super(props);
-    this.state = { compliment: "default" };
+    this.state = {
+      compliment: "try our compliments",
+      newcompliment: []
+    };
   }
 
-  componentDidMount() {
+  // componentDidMount() {
+  //   const that = this;
+  //   axios.get("https://complimentr.com/api").then(response => {
+  //     that.setState({ compliment: response.data.compliment });
+  //   });
+  // }
+  compClick = (e) => {
+    console.log(e)
+    axios
+      .post("/api/compliment", {
+        username: this.props.username,
+        compliment: e
+      })
+      .then(()=> {
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  };
+
+  newCompClick = () => {
     const that = this;
-    axios.get("https://complimentr.com/api").then((response) => {
-      console.log(response.data.compliment);
-      that.setState({ compliment: response.data.compliment });
+    axios.get("https://complimentr.com/api").then(response => {
+      that.setState({
+        newcompliment: [...this.state.newcompliment, response.data.compliment]
+      });
     });
-  }
-  compClick=()=>{
-    console.log(this.state)
-    axios.delete('/api/compliment', {
-      username: this.props.username,
-      compliment: this.state.compliment
-    })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
-  
- 
-  
+  };
+
   render() {
-    console.log(this.state)
-      var divStyle = {
-        color: "white", 
-        fontSize: "16px",
-        width:"20vw",
-        backgroundColor:"#f57f17",
-        margin: "0",
-        padding: "0",
-        fontfamily: "Open Sans",
-      };
-    console.log(this.state.compliment);
-  return (<div>
-    <h1 style={divStyle}>{this.state.compliment}</h1>
-    <button onClick={this.compClick}>ADD compliment</button>
-    </div>
-  )
+
+    var divStyle = {
+      color: "white",
+      fontSize: "16px",
+      width: "20vw",
+      backgroundColor: "#f57f17",
+      margin: "5px",
+      padding: "0",
+      fontfamily: "Open Sans"
+    };
+
+    var mapthis = this.state.newcompliment.map((elements, index) => {
+      return (
+          <h1 style={divStyle}>
+            {elements}
+            <button onClick={()=>{this.compClick(elements)}}>favourite</button>
+          </h1>
+      );
+    });
+
+    
+    return (
+      <div>
+        <h1 style={divStyle}>
+          {this.state.compliment}
+          {/* <button onClick={this.compClick}>favourite</button> */}
+        </h1>
+          {mapthis}
+        <button onClick={this.newCompClick}>more compliment</button>
+      </div>
+    );
   }
 }
-const mapStateToProp= state=> {
-  return{
-    username: state.authReducer.username,
-       
-}
-}
-export default connect(mapStateToProp,{
+const mapStateToProp = state => {
+  return {
+    username: state.authReducer.username
+  };
+};
+export default connect(mapStateToProp, {
   getSession
-})(Compliment)
+})(Compliment);

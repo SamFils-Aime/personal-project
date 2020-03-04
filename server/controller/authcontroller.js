@@ -3,11 +3,15 @@ const bcrypt = require("bcryptjs");
 const register = (req, res) => {
   const db = req.app.get("db");
   const { username, password, firstname, lastname } = req.body;
+  console.log(req.body)
   bcrypt
     .hash(password, 12)
     .then(hash => {
       db.register([username, hash, firstname, lastname])
-        .then(user => res.sendStatus(200))
+        .then(user => {
+            req.session.user={username:user[0].username,firstname: user[0].firstname,lastname: user[0].lastname}
+            console.log(req.session.user)
+            res.status(200).json(req.session.user)})
         .catch(error => {
           console.log(error);
           res.status(500).json("not working brah");
@@ -21,7 +25,8 @@ const register = (req, res) => {
 
 const login = (req,res)=>{
     const db=req.app.get('db')
-    const {username, password}=req.body
+    const {username, password} = req.body
+    console.log(username,password, req.body)
     db.login(username).then(user=>{
         console.log(user)
         if(user.length === 0){
