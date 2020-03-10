@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { getSession } from "../redux/reducer/authReducer";
 import { connect } from "react-redux";
 import axios from "axios";
+import Message from "../Message"
+import { Redirect} from "react-router-dom";
+
 
 class Insults extends Component {
   constructor(props) {
@@ -53,12 +56,19 @@ class Insults extends Component {
 
     var mapthis = this.state.newinsult.map(elements => {
       return (
-        <h1 style={divStyle}>
+          <div className='geninsult' style={divStyle}>
+        <h2>
           {elements}
           <button onClick={()=>{this.insultClick(elements)}}>favourite</button>
-        </h1>
+        </h2>
+          <Message text={elements}/>
+        </div>
       );
     });
+
+    if (!this.props.username) {
+      return <Redirect to="/" />;
+    }
 
     return (
       <div>

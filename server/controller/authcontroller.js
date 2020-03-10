@@ -26,7 +26,7 @@ const register = (req, res) => {
 const login = (req,res)=>{
     const db=req.app.get('db')
     const {username, password} = req.body
-    console.log(username,password, req.body)
+   // console.log(username,password, req.body)
     db.login(username).then(user=>{
         console.log(user)
         if(user.length === 0){
@@ -55,18 +55,12 @@ const getSession = async (req,res)=>{
         res.status(200).json(req.session.user)
     }
 }
-const checkSession = async (req,res)=>{
-    if(getSession){
-        res.status(200).json(req.session.user)
-    }
-    else{
-       return console.log('not registered in')
-    }
-}
 
 const LogOut = (req,res)=>{
+    console.log(req.session)
     req.session.destroy();
-    res.sendStatus(200)
+    console.log(req.session)
+   return res.sendStatus(200)
 }
 
 module.exports = {
@@ -74,5 +68,5 @@ module.exports = {
     login,
     LogOut,
     getSession,
-    checkSession
+  
 }

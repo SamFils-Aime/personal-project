@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { getSession } from "../redux/reducer/authReducer";
 import { connect } from "react-redux";
 import axios from "axios";
-import { Redirect,Link } from "react-router-dom";
-import Compliment from "./Compliment";
+import { Redirect } from "react-router-dom";
+import Message from "../Message"
+
 
 class UserCompliment extends Component {
   constructor(props) {
@@ -42,24 +43,16 @@ class UserCompliment extends Component {
       )}
 
   render() {
-    var divStyle = {
-      color: "red",
-      fontSize: "16px",
-      width: "20vw",
-      backgroundColor: "#f57f17",
-      margin: "3px",
-      padding: "0",
-      fontfamily: "Open Sans"
-    };
+  
+      
     if (this.state.compliment) {
       console.log(this.state.compliment);
       var mapthis = this.state.compliment.map(elements => {
         return (
-          <div style={divStyle} key={elements.compliment_id}>
+          <div className="ucomp" id="com" key={elements.compliment_id}>
             {elements.compliment}
-            <button
-              onClick={() => this.compdeleteClick(elements.compliment_id)}
-            >
+            <Message text={elements.compliment}/>
+            <button onClick={() => this.compdeleteClick(elements.compliment_id)}>
               delete
             </button>
           </div>
@@ -72,7 +65,7 @@ class UserCompliment extends Component {
   }
 
     return (
-      <div>
+      <div className="usercomp">
         <h1>{mapthis}</h1>
       </div>
     );

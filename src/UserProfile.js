@@ -1,61 +1,94 @@
 import React, { Component } from "react";
-import { getSession } from "./redux/reducer/authReducer";
+import { getSession, logOut,resetFields}  from "./redux/reducer/authReducer";
 import { connect } from "react-redux";
-import Compliment from "./components/Compliment"
-import Insult from "./components/Insults"
-import UserCompliment from "./components/UserCompliment"
-import UserInsult from "./components/UserInsult"
+import Popcompliment from "./components/Popcompliment";
+import Popinsults from "./components/Popinsults";
 import ImageDisplay from "./ImageDisplay";
-import Message from "./Message"
-import { Redirect,Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import axios from "axios";
 
 
-
-
- class UserProfile extends Component {
-
-
-  componentDidMount(){
-    this.props.getSession()
+class UserProfile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  
   }
 
-    render() {
+  componentDidMount() {
+      this.props.getSession()
+  }
      
 
-        if(!this.props.username){
-            return (<Redirect to="/" />);
+ 
+  logUserOut=()=>{
+       axios.get("/auth/logOut")
+            .then(() => {
+              this.props.resetFields()
+              console.log(this.props.user)
+            })
+            .catch(err => { console.log(err) })
         }
-        
+  
+render(){
+    if (!this.props.username) {
+      return <Redirect to="/" />;
+    } 
+  
     return (
-      <div>
-        <h1>
-            <ImageDisplay/>
-            {this.props.user.username}
-            <Link to='/Usercompliment'>
-    <button>{this.props.username}'s Compliments list`</button>
+      <div className="background">
+        {this.Redirect}
+        <Navbar />
+        <div className="first">
+          <div className="divul">
+          <ul>
+            <ImageDisplay />
+            <Link to="/Usercompliment">
+              <li>{this.props.username}'s Compliments list`</li>
             </Link>
-            <Link to='/Userinsult'>
-    <button>{this.props.username}'s Insult list`</button>
+            <Link to="/Userinsult">
+              <li id="even">{this.props.username}'s Insult list`</li>
             </Link>
-            <Compliment/>
-            <Insult/>
-            <Message/>
-
-        </h1>
+            <Link to="/insult">
+              <li>live on the wild side</li>
+            </Link>
+            <Link to="compliment">
+              <li id="even">show your best side</li>
+            </Link>
+            <Link to="/update">
+              <li>Update your user name</li>
+            </Link>
+            <Link to="/home">
+            <li  id="even" onClick={ this.logUserOut}> Log Out</li>
+            </Link>
+          </ul>
+          </div>
+          <div className="faves">
+            <div className="comp">
+              <Popcompliment />
+            </div>
+          <div className="insult">
+            <Popinsults />
+          </div>
+          </div>
+        </div>
       </div>
     );
   }
 }
 
-const mapStateToProp= state=> {
-  return{
+const mapStateToProp = state => {
+  return {
     username: state.authReducer.username,
-        password: state.authReducer.password,
-        firstname: state.authReducer.firstname,
-        lastname: state.authReducer.lastname,
-        user: state.authReducer.user
-}
-}
-export default connect(mapStateToProp,{
-  getSession
-})(UserProfile)
+    firstname: state.authReducer.firstname,
+    lastname: state.authReducer.lastname,
+    user: state.authReducer.user
+  };
+};
+export default connect(mapStateToProp, {
+  getSession,
+  logOut,
+  resetFields
+})(UserProfile);

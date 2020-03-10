@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import { getSession } from "../redux/reducer/authReducer";
 import { connect } from "react-redux";
 import axios from "axios";
+import Message from "../Message"
+import { Redirect} from "react-router-dom";
+
+
 
 class Compliment extends Component {
   constructor(props) {
@@ -53,16 +57,21 @@ class Compliment extends Component {
       fontfamily: "Open Sans"
     };
 
-    var mapthis = this.state.newcompliment.map((elements, index) => {
+    var mapthis = this.state.newcompliment.map((elements) => {
       return (
-          <h1 style={divStyle}>
+        <div className="gencomp" style={divStyle}>
+          <h2 >
             {elements}
             <button onClick={()=>{this.compClick(elements)}}>favourite</button>
-          </h1>
+          </h2>
+            <Message text={elements}/>
+        </div>
       );
     });
 
-    
+    if (!this.props.username) {
+      return <Redirect to="/" />;
+    } 
     return (
       <div>
         <h1 style={divStyle}>

@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
+import "./css/main.scss"
 import {connect} from 'react-redux'
 import {  Link, Redirect } from 'react-router-dom';
 import PaperDropzone from "./PaperDropzone"
-import {updateState,resetFields,registerUser,loginUser} from './redux/reducer/authReducer'
+import Register from "./Register" 
+import {updateState,resetFields,registerUser,loginUser, logOut} from './redux/reducer/authReducer'
 
  class Authentication extends Component {
      constructor(props){
@@ -15,7 +17,11 @@ import {updateState,resetFields,registerUser,loginUser} from './redux/reducer/au
          }
      }
 
+     componentDidMount(){
+            this.props.resetFields()
+     }
     handleChange= e =>{
+        console.log(e)
         this.setState({[e.target.name]: e.target.value})
     }
 
@@ -23,47 +29,57 @@ import {updateState,resetFields,registerUser,loginUser} from './redux/reducer/au
         this.props.registerUser(this.state.username,this.state.password,this.state.firstname,this.state.lastname)
     }
 
-    handleClickLogin= (e) =>{
+    handleClickLogin= () =>{
         this.props.loginUser(this.state.username, this.state.password)
         .then(()=>{})
         .catch(error=>{console.log(error)})
     }
 
     render() {
+            console.log(this.state)
         if(this.props.username){return <Redirect to="/user"/>}
         return (
-            <div>
+            <div >
+                <div className='authcontainer'>
                 <section>
                     <h1>login</h1>
                    
                         <p>username:</p>
-                        <input type='text' name='username' onChange={this.handleChange}/>
+                        <input type='text' name="username" placeholder='Username' onChange={this.handleChange}/>
                         <p>password:</p>
-                        <input type='password' name='password' onChange={this.handleChange}/>
+                        <input type='password' name="password" placeholder='Password' onChange={this.handleChange}/>
                     <Link to="/user">
-                        <button onClick={this.handleClickLogin}>login</button>
+                        <button onClick={this.handleClickLogin}>Login</button>
+                    </Link>
+                    <Link to="/register">
+                        <button>
+                            Register
+                        </button>
                     </Link>
                     
                 </section>
-                <section>
-                    <PaperDropzone username1={this.state.username}/>
+
+                {/* <section>
                     <h1>register</h1>
                     <p>username:</p>
-                    <input type='text' name='username' onChange={this.handleChange}/>
+                    <input type='text' name="username" placeholder='Username' onChange={this.handleChange}/>
                     <p>password:</p>
-                    <input type='password' name='password' onChange={this.handleChange}/>
+                    <input type='password' name="password" placeholder='Password' onChange={this.handleChange}/>
                     <p>firstname:</p>
-                    <input  name='firstname' onChange={this.handleChange}/>
+                    <input  name="firstname" placeholder='Firstname' onChange={this.handleChange}/>
                     <p>lastname:</p>
-                    <input  name='lastname' onChange={this.handleChange}/>
+                    <input  name="lastname" placeholder='Lastname' onChange={this.handleChange}/>
                     <Link to="/user">
-                    <button onClick={this.handleClickRegister}>register</button>
+                    <button onClick={this.handleClickRegister}>Register</button>
                     </Link>
                 </section>
+                    <PaperDropzone username1={this.state.username}/> */}
+                </div>
             </div>
         )
     }
 }
+
 const mapStateToProps = state => {
     return {
         username: state.authReducer.username,
@@ -79,4 +95,5 @@ export default connect(mapStateToProps, {
     resetFields,
     registerUser,
     loginUser,
+    logOut
 })(Authentication);

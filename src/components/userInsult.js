@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { getSession } from "../redux/reducer/authReducer";
 import { connect } from "react-redux";
 import axios from "axios";
-import { Redirect,Link } from "react-router-dom";
-import Insult from "./Insults"
+import { Redirect} from "react-router-dom";
+import Message from "../Message"
 
 
 
@@ -52,22 +52,16 @@ import Insult from "./Insults"
 
     render() {
       // console.log(this.state.insult.data)
-        var divStyle = {
-            color: "white", 
-            fontSize: "16px",
-            width:"20vw",
-            backgroundColor:"blue",
-            margin: "3px",
-            fontfamily: "Open Sans",
-          };
+        
+          
           if(this.state.insult){
             console.log(this.state.insult)
         var mapthis= this.state.insult.map(elements=>{
             return (
-              <div style={divStyle} key={elements.insult_id}>
+              <div className="uinsult" id="ins" key={elements.insult_id}>
                 {elements.insult}
+                <Message text={elements.compliment}/>
                 <button onClick={()=>this.compdeleteClick(elements.insult_id)}>delete</button>
-
               </div>
             )
           })}
@@ -75,7 +69,7 @@ import Insult from "./Insults"
             return (<Redirect to="/" />);
         }
         return (
-            <div>
+            <div className="userinsults">
                 <h1 >{mapthis}</h1>
             </div>
 

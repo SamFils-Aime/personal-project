@@ -5,6 +5,7 @@ const initialState = {
   password: "",
   firstname: "",
   lastname: "",
+  id:"",
   user: [],
   loading: false
 };
@@ -16,6 +17,8 @@ const LOGIN_USER = "LOGIN_USER";
 const LOGOUT_USER = "LOGOUT_USER";
 const GETSESSION="GETSESSION"
 const CHECKSESSION="CHECKSESSION"
+const UPDATE_USER="UPDATE_USER"
+
 
 export const updateState = e => {
   return {
@@ -37,13 +40,17 @@ export const getSession=()=>{
 
   }
 }
-// export const checkSession=()=>{
-//   return{
-//     type: CHECKSESSION,
-//     payload: axios.get('/auth/checkuser')
+export const updateuser = (username,firstname,lastname, user_id)=>{
+  return{
+    type: UPDATE_USER,
+    payload: axios.put(`/api/update/${user_id}`,{
+      username,
+      firstname,
+      lastname
+    })
+  }
+}
 
-//   }
-// }
 
 export const registerUser = (username, password,firstname,lastname) => {
   return {
@@ -70,9 +77,9 @@ export const loginUser = (username, password) => {
 export const logOut = () => {
   return {
     type: LOGOUT_USER,
-    payload: axios.get("/auth/logout")
-  };
-};
+    payload: axios.get("/auth/logOut")
+}
+}
 
 
 
@@ -90,12 +97,18 @@ export default function authReducer(state = initialState, action) {
     //     loading: true
     //   };
     case `${REGISTER_USER}_FULFILLED`:
-      console.log(payload, "hit")
       return {
         ...state,
         loading: false,
         username: payload.data.username,
         user: payload.data
+      };
+    case `${UPDATE_USER}_FULFILLED`:
+      return {
+        ...state,
+        loading: false,
+        user: payload.data,
+        username: payload.data.username,
       };
       // case `${LOGIN_USER}_PENDING`:
       //   return {
@@ -106,33 +119,50 @@ export default function authReducer(state = initialState, action) {
         return {
             ...state,
             loading: false,
-            user: payload.data,
-            username: payload.data.username
-        }
-    case `${LOGOUT_USER}_PENDING`:
-      return {
-        ...state,
-        loading: true,
-        user: payload.data
-      };
+            username: payload.data.username,
+            user: payload.data
+        };
+    // case `${LOGOUT_USER}_PENDING`:
+    //   return {
+    //     ...state,
+    //     loading: true,
+    //     user: payload.data
+    //   };
     case `${LOGOUT_USER}_FUFILLED`:
+        console.log(initialState)
       return {
         ...state,
-        loading: false,
-        user: []
+        username: "",
+        password: "",
+        firstname: "",
+        lastname: "",
+        id:'',
+        user: [],
+        loading: false
       };
+      case `${GETSESSION}_PENDING`:
+        return {
+          ...state,
+          loading: true
+        }
       case `${GETSESSION}_FUFILLED`:
+        console.log(payload)
         return{
           ...state,
           loading:false,
           user: payload.data
         }
-      // case `${CHECKSESSION}_FUFILLED`:
-      //   return{
-      //     ...state,
-      //     loading:false,
-      //     user: payload.data
-      //   }
+     case `${RESET_FIELDS}`:
+       return{
+        ...state,
+        username: "",
+        password: "",
+        firstname: "",
+        lastname: "",
+        id:'',
+        user: [],
+        loading: false
+       }
 
     default:
       return state;

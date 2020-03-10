@@ -3,10 +3,10 @@ const express = require('express')
 const massive = require('massive')
 const session = require('express-session')
 const formData = require('express-form-data')
-const twilio = require('twilio')
 const cors= require('cors')
 const app = express()
 const axios = require("axios")
+const path = require('path')
 
 // DOTENV
 const {
@@ -24,15 +24,21 @@ const load = require("./controller/insultContoller")
 const store= require('./controller/addController')
 const remove = require('./controller/deleteController')
 const fave=require('./controller/getController')
+const change=require('./controller/updateController')
 
  //TWILIO AUTHKEY       
     const sid=ACCOUNT_SID
     const token= AUTH_TOKEN
-    const client= new twilio (sid,token)
-
-  
+    const client =require("twilio")(sid, token);
+      
 app.use(cors())
+app.use(express.json())
 app.use(formData.parse())
+app.use(express.static(__dirname+'/..//build'))
+
+app.get('*',(req,res)=>{
+    res.sendFile(path.join(__dirname+"../build/index.html"))
+})
 
 massive(CONNECTION_STRING)
         .then(db=>{
@@ -49,20 +55,18 @@ app.use(
         saveUninitialized: true,
         resave: false,
         secret: SESSION_SECRET,
-        cookie:{ maxAge: 1000*60*60*24*7}
     })
 )
 
 
 
-app.use(express.json())
+
 
 //Authentication
 app.post('/auth/register',authentication.register)
 app.post('/auth/login',authentication.login)
-app.get('/auth/logout',authentication.LogOut)
+app.get('/auth/logOut',authentication.LogOut)
 app.get('/auth/user',authentication.getSession)
-app.get('/auth/checkuser',authentication.checkSession)
 
 //get insults cause cors issue
 app.get('/load/insult', load.insult)
@@ -75,7 +79,10 @@ app.delete('/api/deletecompliment/:compliment_id', remove.deletecompliment)
 //get stored insults and compliment
 app.get('/api/faveinsult', fave.getinsult)
 app.get('/api/favecompliment', fave.getcompliment)
-
+app.get('/api/popinsult', fave.getjoininsult)
+app.get('/api/popcompliment', fave.getjoincompliment)
+// update username
+app.put('/api/update/:user_id', change.edit)
 
 // twillio
 app.get('/',(req,res)=>{
@@ -83,12 +90,12 @@ app.get('/',(req,res)=>{
 })
 app.get('/send-text',(req,res)=>{
     const {recipient, textmessage}=req.query;
-console.log(req.query)
     client.messages.create({
         body:textmessage,
         to:recipient,
         from:TWILIO_NUMBER
-    }).then(message=> console.log(message))
+    })
+    .then(message=> console.log(message))
 })
 
 
