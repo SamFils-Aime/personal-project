@@ -36,7 +36,7 @@ import {updateState,resetFields,registerUser,loginUser, logOut} from './redux/re
     }
 
     render() {
-            console.log(this.state)
+            console.log(this.props.user)
         if(this.props.username){return <Redirect to="/user"/>}
         return (
             <div >

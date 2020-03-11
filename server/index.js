@@ -1,3 +1,4 @@
+const path = require('path')
 require('dotenv').config()
 const express = require('express')
 const massive = require('massive')
@@ -6,7 +7,6 @@ const formData = require('express-form-data')
 const cors= require('cors')
 const app = express()
 const axios = require("axios")
-const path = require('path')
 
 // DOTENV
 const {
@@ -34,11 +34,7 @@ const change=require('./controller/updateController')
 app.use(cors())
 app.use(express.json())
 app.use(formData.parse())
-app.use(express.static(__dirname+'/..//build'))
-
-app.get('*',(req,res)=>{
-    res.sendFile(path.join(__dirname+"../build/index.html"))
-})
+app.use(express.static(__dirname+'/../build'))
 
 massive(CONNECTION_STRING)
         .then(db=>{
@@ -98,5 +94,8 @@ app.get('/send-text',(req,res)=>{
     .then(message=> console.log(message))
 })
 
+app.get('*',(req,res)=>{
+    res.sendFile(path.join(__dirname,"../build/index.html"))
+})
 
 app.listen(SERVER_PORT, () => console.log(`the matrix is running on ${SERVER_PORT}`))

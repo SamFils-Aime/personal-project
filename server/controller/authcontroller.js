@@ -27,6 +27,7 @@ const login = (req,res)=>{
     const db=req.app.get('db')
     const {username, password} = req.body
    // console.log(username,password, req.body)
+   console.log('hit login')
     db.login(username).then(user=>{
         console.log(user)
         if(user.length === 0){
