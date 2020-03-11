@@ -29,16 +29,20 @@ sendtext =_=>{
             }
         const {text}=this.state
         return (
-            <div Message="">
+            <div className="message">
+                <span className="input">
                 <input style={inputStyle}
                 type="text" 
                 placeholder="number" 
                 onChange={e=>this.setState({text:{...text, recipient: e.target.value}})}></input>
+                    
                 <input style={inputStyle}
                 type="text" 
                 placeholder={this.state.textmessage} 
                 onChange={e=>this.setState({text:{...text, textmessage: e.target.value}})}></input>
-                <button onClick={this.sendtext}>send message</button>
+                </span>
+
+                <button className="btn" onClick={this.sendtext} placeholder="send">send</button>
             </div>
         )
     }

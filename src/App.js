@@ -1,6 +1,9 @@
 import React from "react";
 import "./App.scss";
 import "./css/reset.scss"
+import "./css/button.scss"
+import "./css/input.scss"
+import "./css/heart.scss"
 import { Route, Switch } from 'react-router-dom';
 import Authentication from './Authentication'
 import UserProfile from './UserProfile'

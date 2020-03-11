@@ -44,10 +44,14 @@ import {updateState,resetFields,registerUser,loginUser, logOut} from './redux/re
                 <section>
                     <h1>login</h1>
                    
-                        <p>username:</p>
+                        <span className="input">
                         <input type='text' name="username" placeholder='Username' onChange={this.handleChange}/>
-                        <p>password:</p>
+                        </span>
+                        <span className="input">
                         <input type='password' name="password" placeholder='Password' onChange={this.handleChange}/>
+                        </span>
+                            
+
                     <Link to="/user">
                         <button onClick={this.handleClickLogin}>Login</button>
                     </Link>
@@ -58,22 +62,6 @@ import {updateState,resetFields,registerUser,loginUser, logOut} from './redux/re
                     </Link>
                     
                 </section>
-
-                {/* <section>
-                    <h1>register</h1>
-                    <p>username:</p>
-                    <input type='text' name="username" placeholder='Username' onChange={this.handleChange}/>
-                    <p>password:</p>
-                    <input type='password' name="password" placeholder='Password' onChange={this.handleChange}/>
-                    <p>firstname:</p>
-                    <input  name="firstname" placeholder='Firstname' onChange={this.handleChange}/>
-                    <p>lastname:</p>
-                    <input  name="lastname" placeholder='Lastname' onChange={this.handleChange}/>
-                    <Link to="/user">
-                    <button onClick={this.handleClickRegister}>Register</button>
-                    </Link>
-                </section>
-                    <PaperDropzone username1={this.state.username}/> */}
                 </div>
             </div>
         )

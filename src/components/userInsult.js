@@ -61,7 +61,7 @@ import Message from "../Message"
               <div className="uinsult" id="ins" key={elements.insult_id}>
                 {elements.insult}
                 <Message text={elements.compliment}/>
-                <button onClick={()=>this.compdeleteClick(elements.insult_id)}>delete</button>
+                <button id="delete" onClick={()=>this.compdeleteClick(elements.insult_id)}>delete</button>
               </div>
             )
           })}

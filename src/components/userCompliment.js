@@ -52,7 +52,7 @@ class UserCompliment extends Component {
           <div className="ucomp" id="com" key={elements.compliment_id}>
             {elements.compliment}
             <Message text={elements.compliment}/>
-            <button onClick={() => this.compdeleteClick(elements.compliment_id)}>
+            <button id="delete" onClick={() => this.compdeleteClick(elements.compliment_id)}>
               delete
             </button>
           </div>
