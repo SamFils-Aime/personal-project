@@ -80,9 +80,9 @@ app.get('/api/popcompliment', fave.getjoincompliment)
 app.put('/api/update/:user_id', change.edit)
 
 // twillio
-app.get('/',(req,res)=>{
-    res.send('express is doing stuff')
-})
+// app.get('/',(req,res)=>{
+//     res.send('express is doing stuff')
+// })
 app.get('/send-text',(req,res)=>{
     const {recipient, textmessage}=req.query;
     client.messages.create({
