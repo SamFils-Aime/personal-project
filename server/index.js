@@ -34,7 +34,6 @@ const change=require('./controller/updateController')
 app.use(cors())
 app.use(express.json())
 app.use(formData.parse())
-app.use(express.static(__dirname+'/../build'))
 
 massive(CONNECTION_STRING)
         .then(db=>{
@@ -93,6 +92,8 @@ app.get('/send-text',(req,res)=>{
     })
     .then(message=> console.log(message))
 })
+
+app.use(express.static(__dirname+'/../build'))
 
 app.get('*',(req,res)=>{
     res.sendFile(path.join(__dirname,"../build/index.html"))
